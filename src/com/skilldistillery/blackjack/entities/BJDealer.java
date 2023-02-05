@@ -38,23 +38,22 @@ public class BJDealer extends BJPlayer implements IDealer{
 	
 	public void makeDecisions() {
 		//dealer will reveal flipped card
-		for(Card card : hand.getCards()) {
-			if(!card.isFaceUp) {
-				card.flip();
-			}
-		}
+		hand.show();
 		
 		//dealer logic
 		//method from BJPlayer class
-		if(checkHand()<17) {
-			hit(this.dealCard(false));
+		if(canPlay) {
+			//less than 21
+			if(checkHand()<17) {
+				hit(dealCard(false));
+			}
+			else {
+				stand();
+			}
 		}
-		else if(getHasTwentyOne()) {
-			System.out.println("Dealer has BLACKJACK!");
-		}
-		else {
-			stand();
-		}
+		
+		checkStatus();
+		
 		
 	}
 	

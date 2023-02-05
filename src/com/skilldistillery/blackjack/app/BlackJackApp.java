@@ -10,7 +10,7 @@ import com.skilldistillery.blackjack.entities.IDealer;
 
 public class BlackJackApp {
 
-	BJDealer dealer = new BJDealer();
+	BJDealer dealer;
 
 	private List<BJPlayer> players;
 
@@ -79,8 +79,8 @@ public class BlackJackApp {
 	private void gameLoop(Scanner input) {
 		boolean inGameLoop = true;
 		while (inGameLoop) {
-			//players could have natural 21
-			checkGameStatus();
+			// players could have natural 21
+
 			// players play
 			takeTurns(input);
 
@@ -94,6 +94,7 @@ public class BlackJackApp {
 
 	// show the menu for inside the game
 	private void displayGameMenu(BJPlayer p) {
+		System.out.println("*** " + p.getName() + " ***");
 		System.out.println("*** What would you like to do? ***");
 		System.out.println("* 1. Hit                         *");
 		System.out.println("* 2. Stand                       *");
@@ -105,18 +106,19 @@ public class BlackJackApp {
 	// first card face up
 	// last dealer card face down
 	private void setUpGame(int numberOfPlayers) {
-		//clear the old player list
+		// clear the old player list
 		players.clear();
-		
+
 		System.out.println("Setting up the game for " + numberOfPlayers + " players.");
 		// create players, finish with a dealer (so they go last)
 		// create all players
 		for (int i = 0; i < numberOfPlayers; i++) {
 			BJPlayer newPlayer = new BJPlayer();
-			newPlayer.setName("Player " + (i+1));
+			newPlayer.setName("Player " + (i + 1));
 			players.add(newPlayer);
 		}
 		// add dealer as a player (already created by app)
+		dealer = new BJDealer();
 		players.add(dealer);
 
 		for (int i = 0; i < 2; i++) {
@@ -134,32 +136,35 @@ public class BlackJackApp {
 	// goes through list of players allowing each to take a turn (including dealer)
 	private void takeTurns(Scanner input) {
 		for (BJPlayer p : players) {
-			if (p.getCanPlay() && !(p instanceof IDealer)) {
-				while (p.getCanPlay()) { // loop through choices until player must stop then move to next player
+			// check for 21
+			p.checkStatus(); //will set flags
+			
+			if (p instanceof IDealer && p.getCanPlay()) {
+				while (p.getCanPlay()) {
+					((IDealer) p).makeDecisions();
+				}
+			}
+
+			else if (p.getCanPlay()) {
+				while (p.getCanPlay()) {
 					p.lookAtHand();
 					displayGameMenu(p);
 					int choice = getPlayerChoice(input);
+					
 					switch (choice) {
 					case 1:
 						p.hit(dealer.dealCard(false));
 						break;
 					case 2:
 						p.stand();
-						p.setCanPlay(false); // player is done
 						break;
 					default:
 						break;
 					}
-					checkPlayerStatus(p); // checks if player busted
 				}
-
-			}
-			if (p.getCanPlay() && (p instanceof IDealer)) { // dealer has built in decisions
-				((BJDealer) p).makeDecisions();
 			}
 
 		}
-
 	}
 
 	private int getPlayerChoice(Scanner input) {
@@ -180,17 +185,6 @@ public class BlackJackApp {
 
 	}
 
-	private void checkPlayerStatus(BJPlayer player) {
-		//
-		if (player.getHasTwentyOne()) {
-			player.setWinner(); // player is a winner
-			player.setCanPlay(false); // player is done
-		}
-		if (player.getHasBusted()) {
-			player.setCanPlay(false); // player is done
-		}
-	}
-
 	private void showResults() {
 
 		for (BJPlayer p : players) {
@@ -198,10 +192,10 @@ public class BlackJackApp {
 			if (p.getWinner()) {
 				System.out.println(p.getName() + " is a winner!");
 			}
-			if(!p.getWinner() && !(p instanceof IDealer)) {
+			if (!p.getWinner() && !(p instanceof IDealer)) {
 				System.out.println(p.getName() + " lost!");
 			}
-			
+
 		}
 	}
 
@@ -214,8 +208,11 @@ public class BlackJackApp {
 				if (playerDiff < dealerDiff) {
 					p.setWinner();
 				}
-				if(playerDiff == dealerDiff) {
+				if (playerDiff == dealerDiff) {
 					p.setIsPush();
+				}
+				if(dealer.getHasBusted() && !p.getHasBusted()) {
+					p.setWinner();
 				}
 			}
 		}

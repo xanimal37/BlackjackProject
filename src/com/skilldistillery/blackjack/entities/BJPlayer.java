@@ -6,6 +6,10 @@ public class BJPlayer extends Player {
 	boolean canPlay = true;
 	// tied the dealer
 	boolean isPush = false;
+	// has 21
+	boolean hasTwentyOne = false;
+	// has busted
+	boolean hasBusted = false;
 
 	public BJPlayer() {
 		hand = new BlackJackHand();
@@ -15,33 +19,45 @@ public class BJPlayer extends Player {
 		return canPlay;
 	}
 
-	public void setCanPlay(Boolean canPlay) {
-		this.canPlay = canPlay;
-	}
-
-	public void setIsPush() {
-		isPush = true;
-	}
-
 	public boolean getIsPush() {
 		return isPush;
 	}
 
+	public boolean getHasBusted() {
+		return hasBusted;
+	}
+	
+	public void setIsPush() {
+		isPush = true;
+	}
+
+	public void checkStatus() {
+		int total = ((BlackJackHand) hand).getTotalValue();
+
+		if (total > 21) {
+			System.out.println(name + " BUSTED!");
+			hasBusted = true;
+			canPlay = false;
+		} else if (total == 21) {
+			hand.show();
+			System.out.println(name + " BLACKJACK!");
+			hasTwentyOne = true;
+			canPlay = false;
+		} else {
+
+		}
+	}
+
 	public void hit(Card card) {
 		System.out.println(name + " hits!");
-		hand.addCard(card);
-		if (getHasBusted()) {
-			System.out.println(name + " BUSTED!");
-			setCanPlay(false);
-		}
-		if (getHasTwentyOne()) {
-			System.out.println(name + " BLACKJACK!!");
-			setCanPlay(false);
-		}
+		((BlackJackHand)hand).addCard(card);
+		checkStatus();
+
 	}
 
 	public void stand() {
 		System.out.println(name + " stands!");
+		canPlay = false;
 	}
 
 	public void split() {
@@ -51,27 +67,16 @@ public class BJPlayer extends Player {
 		return ((BlackJackHand) hand).getTotalValue();
 	}
 
-	public boolean getHasBusted() {
-		return ((BlackJackHand) hand).getHasBusted();
-	}
-
-	public boolean getHasTwentyOne() {
-		if (((BlackJackHand) hand).getHasTwentyOne()) {
-			return true;
-		} else
-			return false;
-	}
-
 	public void lookAtHand() {
 		String statusString = "";
-		if (!getCanPlay()) {
-			if (getHasBusted()) {
+		if (!canPlay) {
+			if (hasBusted) {
 				statusString += " * BUSTED * ";
 			}
-			if (getHasTwentyOne()) {
+			if (hasTwentyOne) {
 				statusString += " * BLACKJACK * ";
 			}
-			if (getIsPush()) {
+			if (isPush) {
 				statusString += " * PUSH * ";
 			}
 		}
