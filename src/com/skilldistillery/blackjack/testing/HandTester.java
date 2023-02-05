@@ -19,6 +19,8 @@ public class HandTester {
 		
 		hand.addCard(deck.dealCard());
 		
+		System.out.println(hand);
+		
 
 	}
 

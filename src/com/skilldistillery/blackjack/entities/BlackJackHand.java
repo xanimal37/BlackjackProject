@@ -8,8 +8,10 @@ public class BlackJackHand extends Hand {
 	int totalValue = 0;
 	// status - has hand busted?
 	boolean hasBusted = false;
+	//status - has hand hit 21?
+	boolean hasTwentyOne = false;
 
-	//constructor creates list that will hold hand
+	// constructor creates list that will hold hand
 	public BlackJackHand() {
 		cards = new ArrayList<Card>();
 	}
@@ -22,6 +24,10 @@ public class BlackJackHand extends Hand {
 	public boolean getHasBusted() {
 		return hasBusted;
 	}
+	
+	public boolean getHasTwentyOne() {
+		return hasTwentyOne;
+	}
 
 	// need to track the total
 	@Override
@@ -30,7 +36,10 @@ public class BlackJackHand extends Hand {
 		if (isUnderTwentyOne(card)) {
 			cards.add(card);
 			totalValue += card.getValue();
-		} else {
+			if(totalValue==21) {
+				hasTwentyOne = true;
+			}
+		} else if(totalValue>21){
 			bust();
 		}
 	}
@@ -53,7 +62,7 @@ public class BlackJackHand extends Hand {
 
 	// message and change busted status for hand
 	private void bust() {
-		System.out.println("Busted!");
+		// System.out.println("Busted!");
 		hasBusted = true;
 	}
 

@@ -6,10 +6,10 @@ public class Card {
 
 	private Suit suit;
 	private Rank rank;
-	
-	//determine if card is flipped
-	//determines visibility
-	boolean isFaceUp = false;
+
+	// determine if card is flipped
+	// determines visibility
+	boolean isFaceUp = true;
 
 	// constructors
 	public Card() {
@@ -60,15 +60,19 @@ public class Card {
 
 	@Override
 	public String toString() {
-		return rank + " of " + suit.toString();
+		if (isFaceUp) {
+			return "[" + rank + " of " + suit.toString() + "]";
+		} else {
+			return "[Hidden Card]";
+		}
 	}
-	
-	//fip the card from its current status (determines visibility)
+
+	// fip the card from its current status (determines visibility)
 	public void flip() {
 		isFaceUp = !isFaceUp;
 	}
-	
-	//returns boolean denoting if the card is face up or not
+
+	// returns boolean denoting if the card is face up or not
 	public boolean getFaceUp() {
 		return isFaceUp;
 	}
