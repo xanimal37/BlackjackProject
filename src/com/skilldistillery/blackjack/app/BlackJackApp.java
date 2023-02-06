@@ -50,12 +50,30 @@ public class BlackJackApp {
 			displayAppMenu();
 			String userInput = input.nextLine();
 			userInput = userInput.toUpperCase();
+			int numPlayers =1;
 			switch (userInput) {
 			case "Y":
-				System.out.println("Ok! Get ready to play!");
+				System.out.println("** Ok! Get ready to play! **");
+				//remind player ACES ARE 11 for now
+				System.out.println("** ACES ARE 11 IN THIS GAME **");
 				System.out.println("How many players? 1-3");
-				int numPlayers = input.nextInt();
-				input.nextLine();
+				
+				try {
+					numPlayers = input.nextInt();
+					if(numPlayers <1) {
+						numPlayers = 1;
+					}
+					if(numPlayers>3) {
+						numPlayers=3;
+					}
+				}
+				catch (Exception e) {
+					System.out.println("Please enter valid input");
+				}
+				finally {
+					input.nextLine();
+				}
+				
 				// for testing, num players is 1
 				setUpGame(numPlayers);
 				gameLoop(input);
@@ -94,11 +112,12 @@ public class BlackJackApp {
 
 	// show the menu for inside the game
 	private void displayGameMenu(BJPlayer p) {
-		System.out.println("*** " + p.getName() + " ***");
+		System.out.println("***** " + p.getName() + " *****");
 		System.out.println("*** What would you like to do? ***");
-		System.out.println("* 1. Hit                         *");
-		System.out.println("* 2. Stand                       *");
-		System.out.println("* 3. Split                       *");
+		System.out.println("*                                *");
+		System.out.println("*       1. Hit                   *");
+		System.out.println("*       2. Stand                 *");
+		System.out.println("*                                *");
 		System.out.println("**********************************");
 	}
 
@@ -109,7 +128,7 @@ public class BlackJackApp {
 		// clear the old player list
 		players.clear();
 
-		System.out.println("Setting up the game for " + numberOfPlayers + " players.");
+		System.out.println("Setting up the game for " + numberOfPlayers + " players.\n\n");
 		// create players, finish with a dealer (so they go last)
 		// create all players
 		for (int i = 0; i < numberOfPlayers; i++) {
@@ -146,6 +165,9 @@ public class BlackJackApp {
 			}
 
 			else if (p.getCanPlay()) {
+				//dealer show cards (while one is hidden)
+				dealer.lookAtHand();
+				//take turns until stopped
 				while (p.getCanPlay()) {
 					p.lookAtHand();
 					displayGameMenu(p);
@@ -168,9 +190,10 @@ public class BlackJackApp {
 	}
 
 	private int getPlayerChoice(Scanner input) {
-		System.out.println("Getting player choice...");
+		
 		int choice = 0;
 		while (choice != 1 && choice != 2) {
+			System.out.println("Please enter your choice: ");
 			try {
 				choice = input.nextInt();
 			} catch (Exception e) {
@@ -192,7 +215,7 @@ public class BlackJackApp {
 			if (p.getWinner()) {
 				System.out.println(p.getName() + " is a winner!");
 			}
-			if (!p.getWinner() && !(p instanceof IDealer)) {
+			if (!p.getWinner() && !(p instanceof IDealer) && !p.getIsPush()) {
 				System.out.println(p.getName() + " lost!");
 			}
 

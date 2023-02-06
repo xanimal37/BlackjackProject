@@ -10,6 +10,7 @@ public class BJDealer extends BJPlayer implements IDealer{
 	Deck deck;
 
 	// setters
+	// will use this later on when include multiple decks
 	public void setDeck(Deck deck) {
 		this.deck = deck;
 	}
@@ -52,7 +53,7 @@ public class BJDealer extends BJPlayer implements IDealer{
 			}
 		}
 		
-		checkStatus();
+		//checkStatus();
 		
 		
 	}
