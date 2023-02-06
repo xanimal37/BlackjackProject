@@ -5,14 +5,17 @@
 - It is for 1 - 3 human players and a computer dealer
 - each player plays against the dealer
 - Aces are 11
-- each play can hit or stand
+- each player can hit or stand
 - each player is only playing against the dealer. It is not a bug that two players can be winners because they aren't playing against one another. I might not have the rules right but it IS intentional. This also means the game does not end automatically when someone gets 21.
 
 # Technologies Used
-Java, Eclipse IDE, git
+- Java
+- Eclipse IDE 
+- git
 
 # Lessons Learned
-- be sure to cast or will be calling wrong method (cast or use super if that's what it is)
+- be sure to cast or will be calling wrong method (cast or use super if that's what is needed)
+- PLAN CLASSES BETTER!!!! I started with UML and then kind of winged it - won't do that again!
 - in an app loop, make sure everything is instantiated newly or LISTS are cleared
 - keep println()s local (when they are spread out there are messages all over and it's annoying and sloppy)
 - Interface is a helpful way to check type of something. I made an IDealer interface that is implemented by the BJDealer and it's useful to check
@@ -30,6 +33,7 @@ Java, Eclipse IDE, git
 - multiple decks (shoe)
 - player names
 - better output/user interface (as much as can be done with println())
-- lots of other things I didn't do...
 - better exception handling (still using basic Exception e)
+- lots of other things I didn't do...
+
 
