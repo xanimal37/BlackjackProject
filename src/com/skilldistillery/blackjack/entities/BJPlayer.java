@@ -69,7 +69,7 @@ public class BJPlayer extends Player implements Comparable<BJPlayer> {
 	// count the total and check status -- sets or removes player flags (check
 	// status after every 'move')
 	public void checkStatus() {
-		int total = ((BlackJackHand) hand).getTotalValue();
+		int total = ((BlackJackHand) hand).getBlackJackValue();
 
 		if (total > 21) {
 			System.out.println(name + " BUSTED!! ");
@@ -84,10 +84,11 @@ public class BJPlayer extends Player implements Comparable<BJPlayer> {
 
 		} else {
 		}
+		System.out.println(total);
 	}
 
 	public int getHandValue() {
-		return ((BlackJackHand) hand).getTotalValue();
+		return ((BlackJackHand) hand).getBlackJackValue();
 	}
 
 	public void printPlayerStatus() {
@@ -119,8 +120,6 @@ public class BJPlayer extends Player implements Comparable<BJPlayer> {
 	// emptyhands
 	public void emptyHand() {
 		hand.clearHand();
-		// reset the value counter on BlackJackHand
-		((BlackJackHand) hand).resetValue();
 	}
 
 	// actions the player can take until done
@@ -128,7 +127,6 @@ public class BJPlayer extends Player implements Comparable<BJPlayer> {
 		System.out.println(name + " hits!");
 		((BlackJackHand) hand).addCard(card);
 		checkStatus();
-
 	}
 
 	public void stand() {

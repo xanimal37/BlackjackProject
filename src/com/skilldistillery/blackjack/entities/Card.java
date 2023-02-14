@@ -6,6 +6,7 @@ public class Card {
 
 	private Suit suit;
 	private Rank rank;
+	private int value;
 
 	// determine if card is flipped
 	// determines visibility
@@ -18,6 +19,7 @@ public class Card {
 	public Card(Rank rank, Suit suit) {
 		this.rank = rank;
 		this.suit = suit;
+		this.value = rank.getValue();
 	}
 
 	// getters + setters
@@ -30,7 +32,7 @@ public class Card {
 	}
 
 	public int getValue() {
-		return getRank().getValue();
+		return value;
 	}
 
 	public Rank getRank() {
@@ -39,6 +41,10 @@ public class Card {
 
 	public void setRank(Rank rank) {
 		this.rank = rank;
+	}
+	
+	public void setValue(int value) {
+		this.value=value;
 	}
 
 	@Override

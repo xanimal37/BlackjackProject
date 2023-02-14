@@ -1,5 +1,5 @@
 package com.skilldistillery.blackjack.entities;
-
+import java.util.ArrayList;
 import java.util.List;
 
 //this class is for a generic hand of cards
@@ -12,6 +12,21 @@ public abstract class Hand {
 
 	public abstract Card removeCard();
 
+	// get cards
+	// returns a copy of cards
+	public List<Card> getCards() {
+		//copy to new array list
+		List<Card> cardsCopy = new ArrayList<>();
+		cardsCopy.addAll(cards);
+		return cardsCopy;
+	}
+
+	// clear hand/empty hand
+	// clears the list of cards
+	public void clearHand() {
+		cards.clear();
+	}
+
 	@Override
 	public String toString() {
 		String cardsInHand = "";
@@ -19,16 +34,6 @@ public abstract class Hand {
 			cardsInHand += card.toString() + " | ";
 		}
 		return cardsInHand;
-	}
-	
-	//get cards
-	public List<Card> getCards(){
-		return cards;
-	}
-	
-	//clear hand/empty hand
-	public void clearHand() {
-		cards.clear();
 	}
 
 }

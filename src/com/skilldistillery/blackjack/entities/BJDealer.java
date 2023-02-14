@@ -53,7 +53,7 @@ public class BJDealer extends BJPlayer implements IDealer {
 		// method from BJPlayer class
 		if (getCanPlay()) {
 			// less than 21
-			if (((BlackJackHand) hand).getTotalValue() < 17) {
+			if (((BlackJackHand) hand).getBlackJackValue() < 17) {
 				hit(dealCard(false));
 			} else {
 				stand();
