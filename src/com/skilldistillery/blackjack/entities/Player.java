@@ -9,8 +9,8 @@ public abstract class Player {
 	protected String name;
 	
 	//setter
-	public void setWinner() {
-		isWinner = true;
+	public void setIsWinner(boolean isWinner) {
+		this.isWinner = isWinner;
 	}
 	
 	//getter
@@ -35,14 +35,6 @@ public abstract class Player {
 		return name + " Player Hand | " + hand;
 	}
 	
-	public void addCard(Card c) {
-		hand.addCard(c);
-	}
-	
-	//flip all cards to show
-	public void showCards() {
-		hand.show();
-	}
 	
 
 

@@ -73,7 +73,7 @@ public class Card {
 	}
 
 	// returns boolean denoting if the card is face up or not
-	public boolean getFaceUp() {
+	public boolean getIsFaceUp() {
 		return isFaceUp;
 	}
 

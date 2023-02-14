@@ -21,17 +21,14 @@ public abstract class Hand {
 		return cardsInHand;
 	}
 	
-	public void show() {
-		for(Card card : cards) {
-			if(!card.getFaceUp()) {
-				card.flip();
-			}
-		}
-	}
-	
 	//get cards
 	public List<Card> getCards(){
 		return cards;
+	}
+	
+	//clear hand/empty hand
+	public void clearHand() {
+		cards.clear();
 	}
 
 }

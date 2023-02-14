@@ -14,6 +14,7 @@
 - git
 
 # Lessons Learned
+- enums are a good way to layout player choices. They can be used in a switch and used to print menus. Can reduce code and easily expandable.
 - be sure to cast or will be calling wrong method (cast or use super if that's what is needed)
 - PLAN CLASSES BETTER!!!! I started with UML and then kind of winged it - won't do that again!
 - in an app loop, make sure everything is instantiated newly or LISTS are cleared
@@ -30,7 +31,7 @@
 - split
 - double down
 - insurance (never take insurance!)
-- multiple decks (shoe)
+- multiple decks (shoe) - done
 - player names
 - better output/user interface (as much as can be done with println())
 - better exception handling (still using basic Exception e)

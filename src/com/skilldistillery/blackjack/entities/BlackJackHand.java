@@ -16,6 +16,20 @@ public class BlackJackHand extends Hand {
 	public int getTotalValue() {
 		return totalValue;
 	}
+	
+	//reset total value
+	public void resetValue() {
+		totalValue =0;
+	}
+	
+	//flip all cards to show
+	public void turnCardsFaceUp() {
+		for(Card c : cards) {
+			if(!c.getIsFaceUp()) {
+				c.flip();
+			}
+		}
+	}
 
 	// need to track the total
 	@Override

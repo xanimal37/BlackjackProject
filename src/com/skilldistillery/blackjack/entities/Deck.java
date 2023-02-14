@@ -33,5 +33,16 @@ public class Deck {
 		Collections.shuffle(cards);
 	}
 	
+	public void addCard(Card card) {
+		cards.add(card);
+	}
+	
+	public List<Card> getCards(){
+		return cards;
+	}
+	
+	public int getNumCards() {
+		return cards.size();
+	}
 	
 }

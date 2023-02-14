@@ -1,20 +1,27 @@
 package com.skilldistillery.blackjack.entities;
 
-public class BJPlayer extends Player {
+public class BJPlayer extends Player implements Comparable<BJPlayer> {
 
 	// keeps taking turns
-	boolean canPlay = true;
-	// tied the dealer
-	boolean isPush = false;
-	// has 21
-	boolean hasTwentyOne = false;
+	boolean canPlay;
+	// tied with dealer
+	boolean isPush;
 	// has busted
-	boolean hasBusted = false;
+	boolean hasBusted;
+	// has a blackjack!
+	boolean hasBlackJack;
 
 	public BJPlayer() {
 		hand = new BlackJackHand();
+		canPlay = true;
+		isPush = false;
+		hasBlackJack = false;
+		hasBusted = false;
+		isWinner = false;
 	}
 
+	// getters (accessors)
+	// ******************
 	public boolean getCanPlay() {
 		return canPlay;
 	}
@@ -26,61 +33,131 @@ public class BJPlayer extends Player {
 	public boolean getHasBusted() {
 		return hasBusted;
 	}
-	
-	public void setIsPush() {
-		isPush = true;
+
+	public boolean getHasBlackJack() {
+		return hasBlackJack;
 	}
 
+	// setters (mutators)
+	// ******************
+	public void setIsPush(boolean isPush) {
+		this.isPush = isPush;
+	}
+
+	private void setCanPlay(boolean canplay) {
+		this.canPlay = canplay;
+	}
+
+	private void setHasBusted(boolean hasBusted) {
+		this.hasBusted = hasBusted;
+	}
+
+	private void setHasBlackJack(boolean hasBlackJack) {
+		this.hasBlackJack = hasBlackJack;
+	}
+
+	// this method resets all player flags to the original status
+	public void resetPlayer() {
+		isPush = false;
+		canPlay = true;
+		hasBusted = false;
+		hasBlackJack = false;
+		isWinner = false;
+	}
+
+	// things a player would do
+	// count the total and check status -- sets or removes player flags (check
+	// status after every 'move')
 	public void checkStatus() {
 		int total = ((BlackJackHand) hand).getTotalValue();
 
 		if (total > 21) {
-			System.out.println(name + " BUSTED!");
-			hasBusted = true;
-			canPlay = false;
-		} else if (total == 21) {
-			hand.show();
-			System.out.println(name + " BLACKJACK!");
-			hasTwentyOne = true;
-			canPlay = false;
-		} else {
+			System.out.println(name + " BUSTED!! ");
+			setHasBusted(true);
+			setCanPlay(false);
 
+		}
+		if (total == 21) {
+			// player has 21 or BLACKJACK
+			setHasBlackJack(true);
+			setCanPlay(false);
+
+		} else {
 		}
 	}
 
+	public int getHandValue() {
+		return ((BlackJackHand) hand).getTotalValue();
+	}
+
+	public void printPlayerStatus() {
+		StringBuilder statusString = new StringBuilder();
+		if (!getCanPlay()) {
+			if (getHasBusted()) {
+				statusString.append(" * BUSTED * ");
+			}
+			if (getHasBlackJack()) {
+				statusString.append(" * BLACKJACK * ");
+			}
+			if (getIsPush()) {
+				statusString.append(" * PUSH * ");
+			}
+			if(getWinner()) {
+				statusString.append(" * WINNER * ");
+			}
+		}
+		System.out.println(name + " | " + hand + statusString.toString());
+	}
+
+	// playing methods
+
+	// on deal
+	public void takeCard(Card card) {
+		((BlackJackHand) hand).addCard(card);
+	}
+
+	// emptyhands
+	public void emptyHand() {
+		hand.clearHand();
+		// reset the value counter on BlackJackHand
+		((BlackJackHand) hand).resetValue();
+	}
+
+	// actions the player can take until done
 	public void hit(Card card) {
 		System.out.println(name + " hits!");
-		((BlackJackHand)hand).addCard(card);
+		((BlackJackHand) hand).addCard(card);
 		checkStatus();
 
 	}
 
 	public void stand() {
 		System.out.println(name + " stands!");
-		canPlay = false;
+		setCanPlay(false);
 	}
 
 	public void split() {
+		// not implemented yet
 	}
 
-	public int checkHand() {
-		return ((BlackJackHand) hand).getTotalValue();
-	}
-
-	public void lookAtHand() {
-		String statusString = "";
-		if (!canPlay) {
-			if (hasBusted) {
-				statusString += " * BUSTED * ";
-			}
-			if (hasTwentyOne) {
-				statusString += " * BLACKJACK * ";
-			}
-			if (isPush) {
-				statusString += " * PUSH * ";
-			}
+	@Override
+	public int compareTo(BJPlayer o) {
+		// if dealer has busted player wins
+		if (o.getHasBusted() && !getHasBusted()) {
+			return 1;
 		}
-		System.out.println(name + " | " + hand + statusString);
+		//if both have busted
+		else if(o.getHasBusted() && getHasBusted()) {
+			return 0;
+		}
+		// if neither has busted compare values
+		else if (!o.getHasBusted() && !getHasBusted()) {
+			return getHandValue() - o.getHandValue();
+		}
+		// else player loses
+		else {
+			return -1;
+		}
 	}
 
 }
